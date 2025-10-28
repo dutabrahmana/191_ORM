@@ -10,3 +10,22 @@ app.listen(PORT, async () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
+db.sequelize.sync().then(() => {
+    app.listen(3000, () => {
+        console.log('Server Started');
+    })
+
+ })
+ .catch((err) => {
+    console.log(err);
+ })
+app.post('/komik', async (req, res) => {
+    const data = req.body;
+    try {
+        const komik = await db.Komik.create(data);
+        res.send(komik);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+});
+
